@@ -1,0 +1,4 @@
+name: LCCC
+include: ./
+depend: standard-library-1.7 cubical
+flags: --cubical --without-K
