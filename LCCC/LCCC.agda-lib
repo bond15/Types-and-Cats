@@ -1,4 +1,4 @@
 name: LCCC
-include: ./
-depend: standard-library-1.7 cubical
+include: ./ ./STLC
+depend: standard-library-1.7 cubical cat
 flags: --cubical --without-K

@@ -154,9 +154,9 @@ record Functor {o₁ h₁ o₂ h₂} (C : PreCat o₁ h₁) (D : PreCat o₂ h�
         F-id : ∀{x} → F₁ (C.id {x}) ≡ D.id
         F-∘ : ∀{x y z} → (f : C.Hom y z)(g : C.Hom x y ) → F₁ (f C.∘ g) ≡ (F₁ f) D.∘ (F₁ g)
 
-record _⇒_ {o₁ h₁ o₂ h₂} {C : PreCat o₁ h₁}{D : PreCat o₂ h₂}(F G : Functor C D) : Set (o₁ ⊔ h₁ ⊔ h₂) where 
+record NT {o₁ h₁ o₂ h₂} {C : PreCat o₁ h₁}{D : PreCat o₂ h₂}(F G : Functor C D) : Set (o₁ ⊔ h₁ ⊔ h₂) where 
     no-eta-equality
-    constructor NT 
+    constructor MkNT
     private 
         open Functor F 
         open Functor G renaming (F₀ to G₀ ; F₁ to G₁)
@@ -217,6 +217,7 @@ record _⊣_ {o₁ h₁ o₂ h₂}{C : PreCat o₁ h₁}{D : PreCat o₂ h₂}
         module D = PreCat D
         open Functor L renaming (F₀ to L₀ ; F₁ to L₁)
         open Functor R renaming (F₀ to R₀ ; F₁ to R₁)
+        _⇒_ = NT
     field 
         unit : Id {Cat = C} ⇒ (R F∘ L)  
         counit : (L F∘ R) ⇒ Id {Cat = D} 
@@ -246,9 +247,9 @@ record _⊣_ {o₁ h₁ o₂ h₂}{C : PreCat o₁ h₁}{D : PreCat o₂ h₂}
     
         unit and counit must obey these laws
     -}
-    module unit = _⇒_ unit
+    module unit = NT unit
     open unit  
-    module counit = _⇒_ counit renaming (η to ε)
+    module counit = NT counit renaming (η to ε)
     open counit
     field 
         zig : ∀{A : C.Ob} → ε (L₀ A) D.∘ L₁ (η A) ≡ D.id
@@ -824,4 +825,4 @@ module ChangeBase{o ℓ}{C : PreCat o ℓ}
 
         Base-Change .F-id = {!   !}
         Base-Change .F-∘ = {!   !} 
-  -}
+  -} 
